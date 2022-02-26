@@ -163,6 +163,9 @@ public class GUI implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startButton) {
             startButton.setEnabled(false);
+            frame.getContentPane().remove(startPanel);
+            frame.getContentPane().remove(gameTitlePanel);
+            frame.repaint();
             frame.add(gameBoard);
             botMove();
         }
