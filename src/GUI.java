@@ -12,6 +12,8 @@ public class GUI implements ActionListener {
     private JButton resetButton;
     private JButton exitButton;
     private JLabel winner;
+
+    final String PLAYER = "X", BOT = "O";
     
     public GUI() {
         // frame setup
@@ -92,8 +94,19 @@ public class GUI implements ActionListener {
         frame.setVisible(true);
     }
 
+    // check if the spot is empty
     public boolean spaceIsEmpty(JButton button) {
         return button.getText() == "";
+    }
+
+    // insert letter into empty spot
+    public void insertLetter(int position, String playerSymbol) {
+        if (spaceIsEmpty(buttons[position])) {
+            buttons[position].setText(playerSymbol);
+        }
+        else {
+            System.out.println("You cannot move here");
+        }
     }
 
     @Override
@@ -109,9 +122,7 @@ public class GUI implements ActionListener {
         
         for (int i = 0; i < buttons.length; i++) {
             if (e.getSource() == buttons[i]) {
-                if (spaceIsEmpty(buttons[i])) {
-                    buttons[i].setText("X");
-                }
+                insertLetter(i, PLAYER);
             }
         }
     }
