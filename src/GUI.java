@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class NewGUI implements ActionListener {
+public class GUI implements ActionListener {
     private JFrame frame;
     private JPanel gameTitlePanel;
     private JPanel gameBoard;
@@ -27,7 +27,7 @@ public class NewGUI implements ActionListener {
 
     private final String PLAYER = "X", BOT = "O";
 
-    public NewGUI() {
+    public GUI() {
         // frame setup
         frame = new JFrame();
         frame.setTitle("Tic Tac Toe");

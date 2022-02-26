@@ -1,6 +1,6 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        NewGUI game = new NewGUI();
+        GUI game = new GUI();
         while (true) {
             game.autoCheck();
         }
