@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class GUI implements ActionListener {
     private JFrame frame;
-    private JPanel gamePanel;
+    private JPanel gameBoard;
     private JPanel winnerPanel;
     private JPanel resetPanel;
     private JPanel exitPanel;
@@ -26,11 +26,11 @@ public class GUI implements ActionListener {
         frame.setLocationRelativeTo(null);
 
         // game panel setup
-        gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(3, 3));
-        gamePanel.setBounds(95, 90, 400, 400);
-        gamePanel.setBackground(Color.BLACK);
-        frame.add(gamePanel);
+        gameBoard = new JPanel();
+        gameBoard.setLayout(new GridLayout(3, 3));
+        gameBoard.setBounds(95, 90, 400, 400);
+        gameBoard.setBackground(Color.BLACK);
+        frame.add(gameBoard);
 
         // winner label setup
         winner = new JLabel();
@@ -85,7 +85,7 @@ public class GUI implements ActionListener {
             buttons[i].setForeground(Color.WHITE);
             buttons[i].setFont(new Font("Cambria", Font.PLAIN, 70));
             buttons[i].addActionListener(this);
-            gamePanel.add(buttons[i]);
+            gameBoard.add(buttons[i]);
         }
 
         frame.setVisible(true);
