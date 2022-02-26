@@ -67,6 +67,7 @@ public class GUI implements ActionListener {
         resetButton.setText("RESET");
         resetButton.setBackground(Color.BLACK);
         resetButton.setForeground(Color.WHITE);
+        resetButton.addActionListener(this);
         resetButton.setFocusable(false);
 
         // reset button panel setup
@@ -91,15 +92,26 @@ public class GUI implements ActionListener {
         frame.setVisible(true);
     }
 
+    public boolean spaceIsEmpty(JButton button) {
+        return button.getText() == "";
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == exitButton) {
             System.exit(0);
         }
+
+        if (e.getSource() == resetButton) {
+            frame.dispose();
+            new GUI();
+        }
         
         for (int i = 0; i < buttons.length; i++) {
             if (e.getSource() == buttons[i]) {
-                buttons[i].setText("X");
+                if (spaceIsEmpty(buttons[i])) {
+                    buttons[i].setText("X");
+                }
             }
         }
     }
