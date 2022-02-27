@@ -30,11 +30,9 @@ public class GUI implements ActionListener {
     public GUI() {
         // frame setup
         frame = new JFrame();
-        frame.setTitle("Tic Tac Toe");
         frame.setSize(600, 600);
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
