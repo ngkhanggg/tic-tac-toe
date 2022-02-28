@@ -1,53 +1,29 @@
 public class GameLogic {
-    public String[] board = new String[9];
-    public int count;
+    String[] board = new String[9];
+    int count = 0;
 
-    public GameLogic() {
-        count = 0;
-        initializeBoard();
-    }
-
-    // initialize board
-    public void initializeBoard() {
+    public void initBoard() {
         for (int i = 0; i < board.length; i++) {
             board[i] = "";
         }
+        count = 0;
     }
 
-    // check if spot is free
-    public boolean spotIsFree(int position) {
-        return board[position] == "";
+    // check if spot is empty
+    public boolean spotIsEmpty(int position) {
+        return board[position].equals("");
     }
 
-    // insert letter into board
-    public void insertLetter(int position, String symbol) {
-        if (spotIsFree(position)) {
+    // insert letter into the board
+    public void insertMove(int position, String symbol) {
+        if (spotIsEmpty(position)) {
             board[position] = symbol;
-            this.count++;
-        }
-    }
-
-    // keep playing
-    public boolean keepPlaying() {
-        return getWinner() == 0;
-    }
-
-    // get winner
-    public String winnerNoti() {
-        switch(getWinner()) {
-            case 1:
-                return "Player Won!";
-            case 2:
-                return "Computer Won!";
-            case 3:
-                return "Draw!";
-            default:
-                return "";
+            count++;
         }
     }
 
     // check for winner
-    public int getWinner() {
+    public int checkWinner() {
         // player won
         if (
             board[0] == board[1] && board[1] == board[2] && board[2] == "X" || 
@@ -92,16 +68,16 @@ public class GameLogic {
     }
 
     public int getBotMove() {
-        int bestScore = -1;
-        int bestMove = 0;
+        int bestScore = -Integer.MAX_VALUE;
+        int bestMove = -1;
 
         for (int i = 0; i < board.length; i++) {
             if (board[i] == "") {
                 board[i] = "O";
-                this.count++;
+                count++;
                 int score = minimax(0, false);
                 board[i] = "";
-                this.count--;
+                count--;
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = i;
@@ -113,7 +89,7 @@ public class GameLogic {
     }
 
     public int minimax(int depth, boolean isMaximizing) {
-        int winner = getWinner();
+        int winner = checkWinner();
 
         // if bot wins, return positive value
         if (winner == 2) {
@@ -137,10 +113,10 @@ public class GameLogic {
             for (int i = 0; i < 9; i++) {
                 if (board[i] == "") {
                     board[i] = "O";
-                    this.count++;
+                    count++;
                     int score = minimax(0, false);
                     board[i] = "";
-                    this.count--;
+                    count--;
                     if (score > bestScore) {
                         bestScore = score;
                     }
@@ -158,10 +134,10 @@ public class GameLogic {
             for (int i = 0; i < 9; i++) {
                 if (board[i] == "") {
                     board[i] = "X";
-                    this.count++;
+                    count++;
                     int score = minimax(depth + 1, true);
                     board[i] = "";
-                    this.count--;
+                    count--;
                     if (score < bestScore) {
                         bestScore = score;
                     }

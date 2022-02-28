@@ -1,72 +1,70 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 public class GUI implements ActionListener {
     private JFrame frame;
-    private JPanel gameTitlePanel;
-    private JPanel gameBoard;
-    private JPanel winnerPanel;
-    private JPanel startPanel;
-    private JPanel exitPanel;
-    private JButton gameButtons[] = new JButton[9];
-    private JButton startButton;
-    private JButton exitButton;
-    private JLabel gameTitle;
-    private JLabel winner;
+    private JPanel gameTitlePanel, winnerPanel, menuPanel, gameBoard;
+    private JButton resetButton, exitButton;
+    private JButton[] gameButtons = new JButton[9];
+    private JLabel gameTitle, winner;
 
     GameLogic algo = new GameLogic();
 
     private final String PLAYER = "X", BOT = "O";
 
     public GUI() {
+        algo.initBoard();
+
         // frame setup
         frame = new JFrame();
         frame.setSize(600, 600);
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setResizable(false);
         frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
 
-        // game's title setup
+        // game title setup
         gameTitle = new JLabel();
         gameTitle.setFont(new Font("Cambria", Font.PLAIN, 80));
         gameTitle.setForeground(Color.WHITE);
+        gameTitle.setFocusable(false);
         gameTitle.setText("Tic Tac Toe");
 
-        // game's title panel setup
+        // game title panel setup
         gameTitlePanel = new JPanel();
-        gameTitlePanel.setBounds(95, 240, 400, 100);
+        gameTitlePanel.setBounds(95, 0, 400, 100);
         gameTitlePanel.setBackground(Color.BLACK);
+        gameTitlePanel.setFocusable(false);
         gameTitlePanel.add(gameTitle);
         frame.add(gameTitlePanel);
 
-        // game panel setup
-        gameBoard = new JPanel();
-        gameBoard.setLayout(new GridLayout(3, 3));
-        gameBoard.setBounds(95, 90, 400, 400);
-        gameBoard.setBackground(Color.BLACK);
-
-        // winner label setup
+        // winner setup
         winner = new JLabel();
         winner.setFont(new Font("Cambria", Font.PLAIN, 28));
         winner.setForeground(Color.WHITE);
+        winner.setFocusable(false);
+        winner.setText("Player Won!");
 
-        // winner pannel setup
+        // winner panel setup
         winnerPanel = new JPanel();
-        winnerPanel.setBounds(195, 20, 200, 50);
+        winnerPanel.setBounds(199, 540, 200, 50);
         winnerPanel.setBackground(Color.BLACK);
         winnerPanel.add(winner);
         frame.add(winnerPanel);
+
+        // reset button setup
+        resetButton = new JButton();
+        resetButton.setFont(new Font("Cambria", Font.PLAIN, 20));
+        resetButton.setText("RESET");
+        resetButton.setBackground(Color.BLACK);
+        resetButton.setForeground(Color.WHITE);
+        resetButton.setFocusable(false);
+        resetButton.addActionListener(this);
 
         // exit button setup
         exitButton = new JButton();
@@ -77,49 +75,45 @@ public class GUI implements ActionListener {
         exitButton.setFocusable(false);
         exitButton.addActionListener(this);
 
-        // exit panel setup
-        exitPanel = new JPanel();
-        exitPanel.setBounds(495, 550, 120, 40);
-        exitPanel.setBackground(Color.BLACK);
-        exitPanel.add(exitButton);
-        frame.add(exitPanel);
+        // menu panel setup
+        menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.X_AXIS));
+        menuPanel.setBounds(420, 555, 175, 40);
+        menuPanel.setBackground(Color.BLACK);
+        menuPanel.add(resetButton);
+        menuPanel.add(Box.createRigidArea(new Dimension(3, 0)));
+        menuPanel.add(exitButton);
+        frame.add(menuPanel);
 
-        // start button setup
-        startButton = new JButton();
-        startButton.setFont(new Font("Cambria", Font.PLAIN, 20));
-        startButton.setText("START");
-        startButton.setBackground(Color.BLACK);
-        startButton.setForeground(Color.WHITE);
-        startButton.addActionListener(this);
-        startButton.setEnabled(true);
-        startButton.setFocusable(false);
-
-        // start button panel setup
-        startPanel = new JPanel();
-        startPanel.setBounds(236, 505, 120, 40);
-        startPanel.setBackground(Color.BLACK);
-        startPanel.add(startButton);
-        frame.add(startPanel);
+        // game board setup
+        gameBoard = new JPanel();
+        gameBoard.setLayout(new GridLayout(3, 3));
+        gameBoard.setBounds(95, 120, 400, 400);
+        gameBoard.setBackground(Color.BLACK);
+        gameBoard.setVisible(true);
+        frame.add(gameBoard);
 
         // game buttons setup
         for (int i = 0; i < gameButtons.length; i++) {
             gameButtons[i] = new JButton();
             gameButtons[i].setFocusable(false);
-            // gameButtons[i].setText(String.valueOf(i);
             gameButtons[i].setBackground(Color.BLACK);
             gameButtons[i].setForeground(Color.WHITE);
             gameButtons[i].setFont(new Font("Cambria", Font.PLAIN, 90));
             gameButtons[i].addActionListener(this);
-            gameButtons[i].setEnabled(false);
             gameBoard.add(gameButtons[i]);
         }
 
         frame.setVisible(true);
+
+        while (true) {
+            autoCheck();
+        }
     }
-    
-    // auto check for winner
+
+    // auto check
     public void autoCheck() {
-        int status = algo.getWinner();
+        int status = algo.checkWinner();
 
         switch(status) {
             case 1:
@@ -142,6 +136,8 @@ public class GUI implements ActionListener {
                 gameButtons[i].setEnabled(false);
             }
         }
+
+        // enable buttons
         else {
             for (int i  = 0; i < gameButtons.length; i++) {
                 gameButtons[i].setEnabled(true);
@@ -153,31 +149,33 @@ public class GUI implements ActionListener {
     public void botMove() {
         int botMove = algo.getBotMove();
         gameButtons[botMove].setText(BOT);
-        algo.insertLetter(botMove, BOT);
+        algo.insertMove(botMove, BOT);
     }
 
-    // action listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startButton) {
-            startButton.setEnabled(false);
-            frame.getContentPane().remove(startPanel);
-            frame.getContentPane().remove(gameTitlePanel);
-            frame.repaint();
-            frame.add(gameBoard);
-            botMove();
+        Object a = e.getSource();
+        
+        if (a == resetButton) {
+            algo.initBoard();
+            for (int i = 0; i < gameButtons.length; i++) {
+                gameButtons[i].setText("");
+                gameButtons[i].setEnabled(true);
+            }
         }
-        if (e.getSource() == exitButton) {
+
+        if (a == exitButton) {
             System.exit(0);
         }
-        for (int i = 0; i < algo.board.length; i++) {
-            if (e.getSource() == gameButtons[i]) {
-                if (algo.spotIsFree(i)) {
-                    gameButtons[i].setText(PLAYER);
-                    algo.insertLetter(i, PLAYER);
 
-                    int winner = algo.getWinner();
-                    if (winner != 1 || winner != 2 || winner != 3) {
+        for (int i = 0; i < gameButtons.length; i++) {
+            if (a == gameButtons[i]) {
+                if (algo.spotIsEmpty(i)) {
+                    gameButtons[i].setText(PLAYER);
+                    algo.insertMove(i, PLAYER);
+
+                    int winner = algo.checkWinner();
+                    if (winner == 0) {
                         botMove();
                     }
                 }
