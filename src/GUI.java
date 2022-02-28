@@ -84,7 +84,7 @@ public class GUI implements ActionListener {
         exitPanel.add(exitButton);
         frame.add(exitPanel);
 
-        // reset button setup
+        // start button setup
         startButton = new JButton();
         startButton.setFont(new Font("Cambria", Font.PLAIN, 20));
         startButton.setText("START");
@@ -94,7 +94,7 @@ public class GUI implements ActionListener {
         startButton.setEnabled(true);
         startButton.setFocusable(false);
 
-        // reset button panel setup
+        // start button panel setup
         startPanel = new JPanel();
         startPanel.setBounds(236, 505, 120, 40);
         startPanel.setBackground(Color.BLACK);
