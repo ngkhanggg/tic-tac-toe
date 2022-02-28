@@ -93,12 +93,12 @@ public class GameLogic {
 
         // if bot wins, return positive value
         if (winner == 2) {
-            return 1;
+            return Integer.MAX_VALUE;
         }
 
         // if player wins, return negative value
         else if (winner == 1) {
-            return -1;
+            return -Integer.MAX_VALUE;
         }
 
         // if it's a tie, return 0
