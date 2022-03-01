@@ -5,6 +5,7 @@ Tic Tac Toe, Xs and Os is a game for two players who take turns marking the spac
 - An easy-to-understand minimax algorithm
 
 
-With the minimax algorithm, the computer cannot be defeated.
-<br>
-It will either win or end in a tie.
+With the minimax algorithm, the computer cannot be defeated; it will either win or end in a tie.
+# How to run project on replit
+Go to src folder and add `package src;` on top of each java class<br>
+Set run command of replit's config file to `javac src/App.java; java src/App`
